@@ -539,7 +539,7 @@ export default function Home() {
             {
               question: "what's the tool actually doing?",
               answer:
-                'it turns your messy and honest dev journal into tweets and... "sounds like you". no fake polish and no AI cringeness',
+                'it turns your messy and honest dev journal into tweets and... "sounds like you". no fake polish and no AI cringeness.',
             },
             {
               question: "what model does it use?",
