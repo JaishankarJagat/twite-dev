@@ -122,7 +122,7 @@ export default function V1() {
 
       {/* section: tweet output */}
       <section className="max-w-3xl mx-auto px-6 py-2 whitespace-pre-wrap font-lora text-left text-sm bg-base-200 p-4 rounded-md">
-        {tweets ? tweets : "tweets will appear here"}
+        {tweets}
       </section>
     </main>
   );
