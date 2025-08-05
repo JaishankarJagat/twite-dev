@@ -1,4 +1,32 @@
+"use client";
+
+import { useState } from "react";
+
 export default function V1() {
+  const [journal, setJournal] = useState("");
+  const [tweets, setTweets] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function handleGenerate(e) {
+    e.preventDefault();
+    setLoading(true);
+    setTweets("");
+
+    try {
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: journal }),
+      });
+
+      const data = await res.json();
+      setTweets(data.result || "Something went wrong.");
+    } catch (err) {
+      setTweets("Error generating tweets.");
+    } finally {
+      setLoading(false);
+    }
+  }
   return (
     <main className="text-neutral">
       {/* section: header */}
@@ -62,7 +90,7 @@ export default function V1() {
           </div>
         </div>
       </section>
-      {/* section: journal */}
+      {/* section: journal input */}
       <section className="max-w-3xl mx-auto px-6 py-32 text-center">
         <div className="font-space tracking-tight opacity-60 mb-2">
           stuck with writing?
@@ -74,16 +102,27 @@ export default function V1() {
           as you get ~100 credits a month... i would recommend you use it 3x a
           day. so keep coming back every third of your day.
         </div>
+
         <textarea
           className="textarea textarea-neutral w-full font-space mb-8 border-1"
-          placeholder="pick a journal 👆"
-        ></textarea>
-        <button className="btn btn-neutral font-raleway font-extrabold text-lg">
-          show me my tweets.
+          placeholder="what did you do today?"
+          rows={6}
+          value={journal}
+          onChange={(e) => setJournal(e.target.value)}
+        />
+
+        <button
+          className="btn btn-neutral font-raleway font-extrabold text-lg"
+          onClick={handleGenerate}
+          disabled={loading || !journal}
+        >
+          {loading ? "Generating..." : "show me my tweets."}
         </button>
       </section>
-      <section className="max-w-3xl mx-auto px-6 py-2">
-        tweets will appear here
+
+      {/* section: tweet output */}
+      <section className="max-w-3xl mx-auto px-6 py-2 whitespace-pre-wrap font-lora text-left text-sm bg-base-200 p-4 rounded-md">
+        {tweets ? tweets : "tweets will appear here"}
       </section>
     </main>
   );
