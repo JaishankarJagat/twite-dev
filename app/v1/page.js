@@ -20,9 +20,9 @@ export default function V1() {
       });
 
       const data = await res.json();
-      setTweets(data.result || "Something went wrong.");
+      setTweets(data.result || "something went wrong");
     } catch (err) {
-      setTweets("Error generating tweets.");
+      setTweets("an error occured");
     } finally {
       setLoading(false);
     }
