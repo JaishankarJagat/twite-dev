@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import TemplateTweet from "../components/TemplateTweet";
+import SectionFooter from "../components/SectionFooter";
 
 export default function V1() {
   const [journal, setJournal] = useState("");
@@ -107,7 +109,7 @@ export default function V1() {
         </div>
 
         <textarea
-          className="textarea textarea-neutral w-full font-space mb-8 border-1"
+          className="textarea textarea-neutral w-full font-space mb-6 border-1"
           placeholder="what did you do today?"
           rows={6}
           value={journal}
@@ -115,50 +117,53 @@ export default function V1() {
         />
 
         <button
-          className="btn btn-neutral font-raleway font-extrabold text-lg"
+          className="btn btn-neutral font-raleway font-extrabold text-lg mb-32"
           onClick={handleGenerate}
           disabled={loading || !journal}
         >
-          {loading ? "Generating..." : "show me my tweets."}
+          {loading ? (
+            <div>
+              generating{" "}
+              <span className="loading loading-dots loading-sm" />{" "}
+            </div>
+          ) : (
+            "show me my tweets."
+          )}
         </button>
-      </section>
-
-      {/* section: tweet output */}
-      <section className="max-w-3xl mx-auto px-6 py-2 font-lora text-left text-sm bg-base-200 p-4 rounded-md space-y-4">
-        {loading && <p className="opacity-60">Generating tweets...</p>}
-
         {!loading && tweets === "an error occurred" && (
-          <p className="text-red-500">Oops! Something went wrong. Try again.</p>
+          <div className="font-raleway tracking-tighter font-extrabold text-xl text-error leading-none">
+            <span className="opacity-60">oops! something went wrong.</span>{" "}
+            <br />
+            <span className="text-3xl opacity-100">try again.</span>
+          </div>
         )}
-
         {!loading &&
           tweets &&
           typeof tweets === "object" &&
           tweets.success === false && (
-            <p className="opacity-60">
-              🤷 Nothing tweetable in that journal.
+            <div className="font-raleway tracking-tighter font-extrabold text-xl text-neutral leading-none">
+              <span className="text-3xl opacity-100">nothing tweetable.</span>
               <br />
-              Try being more raw, expressive, or specific in your next entry.
-            </p>
-          )}
-
-        {!loading &&
-          tweets &&
-          typeof tweets === "object" &&
-          tweets.success &&
-          tweets.tweets.map((t, i) => (
-            <div key={i} className="p-4 bg-white rounded shadow-sm">
-              <p className="whitespace-pre-line text-gray-800 mb-2">
-                {t.tweet}
-              </p>
-              {t.suggested_media && (
-                <p className="text-sm text-gray-500">
-                  📸 Suggested media: <em>{t.suggested_media}</em>
-                </p>
-              )}
+              <span className="opacity-60">
+                be more raw + expressive + specific.
+              </span>
             </div>
-          ))}
+          )}
+        {!loading && tweets && typeof tweets === "object" && tweets.success && (
+          <div className="bg-base-100 rounded-sm border-neutral border">
+            {tweets.tweets.map((t, i) => (
+              <div key={i}>
+                <TemplateTweet tweet={t} index={i} />
+                {i !== tweets.tweets.length - 1 && (
+                  <hr className="text-neutral" />
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </section>
+      {/* section: footer */}
+      <SectionFooter />
     </main>
   );
 }
