@@ -96,7 +96,7 @@ export default function V1() {
       </section>
 
       {/* section: journal input */}
-      <section className="max-w-3xl mx-auto px-6 py-32 text-center">
+      <section className="max-w-3xl mx-auto px-6 pt-32 text-center max-sm:text-start">
         <div className="font-space tracking-tight opacity-60 mb-2">
           stuck with writing?
         </div>
@@ -117,7 +117,7 @@ export default function V1() {
         />
 
         <button
-          className="btn btn-neutral font-raleway font-extrabold text-lg mb-32"
+          className="btn btn-neutral font-raleway font-extrabold text-lg mb-32 max-sm:w-full"
           onClick={handleGenerate}
           disabled={loading || !journal}
         >
@@ -131,7 +131,7 @@ export default function V1() {
           )}
         </button>
         {!loading && tweets === "an error occurred" && (
-          <div className="font-raleway tracking-tighter font-extrabold text-xl text-error leading-none">
+          <div className="font-raleway tracking-tighter font-extrabold text-xl text-error leading-none mb-32">
             <span className="opacity-60">oops! something went wrong.</span>{" "}
             <br />
             <span className="text-3xl opacity-100">try again.</span>
@@ -141,7 +141,7 @@ export default function V1() {
           tweets &&
           typeof tweets === "object" &&
           tweets.success === false && (
-            <div className="font-raleway tracking-tighter font-extrabold text-xl text-neutral leading-none">
+            <div className="font-raleway tracking-tighter font-extrabold text-xl text-neutral leading-none mb-32">
               <span className="text-3xl opacity-100">nothing tweetable.</span>
               <br />
               <span className="opacity-60">
@@ -150,7 +150,7 @@ export default function V1() {
             </div>
           )}
         {!loading && tweets && typeof tweets === "object" && tweets.success && (
-          <div className="bg-base-100 rounded-sm border-neutral border">
+          <div className="bg-base-100 rounded-sm border-neutral border mb-32">
             {tweets.tweets.map((t, i) => (
               <div key={i}>
                 <TemplateTweet tweet={t} index={i} />
