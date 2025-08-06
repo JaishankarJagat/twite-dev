@@ -4,13 +4,13 @@ import { useState } from "react";
 
 export default function V1() {
   const [journal, setJournal] = useState("");
-  const [tweets, setTweets] = useState("");
+  const [tweets, setTweets] = useState(null); // null | string | object
   const [loading, setLoading] = useState(false);
 
   async function handleGenerate(e) {
     e.preventDefault();
     setLoading(true);
-    setTweets("");
+    setTweets(null);
 
     try {
       const res = await fetch("/api/generate", {
@@ -20,13 +20,15 @@ export default function V1() {
       });
 
       const data = await res.json();
-      setTweets(data.result || "something went wrong");
+      console.log("GPT Response:", data);
+      setTweets(data); // directly set object with { success, tweets }
     } catch (err) {
-      setTweets("an error occured");
+      setTweets("an error occurred");
     } finally {
       setLoading(false);
     }
   }
+
   return (
     <main className="text-neutral">
       {/* section: header */}
@@ -90,6 +92,7 @@ export default function V1() {
           </div>
         </div>
       </section>
+
       {/* section: journal input */}
       <section className="max-w-3xl mx-auto px-6 py-32 text-center">
         <div className="font-space tracking-tight opacity-60 mb-2">
@@ -121,8 +124,40 @@ export default function V1() {
       </section>
 
       {/* section: tweet output */}
-      <section className="max-w-3xl mx-auto px-6 py-2 whitespace-pre-wrap font-lora text-left text-sm bg-base-200 p-4 rounded-md">
-        {tweets}
+      <section className="max-w-3xl mx-auto px-6 py-2 font-lora text-left text-sm bg-base-200 p-4 rounded-md space-y-4">
+        {loading && <p className="opacity-60">Generating tweets...</p>}
+
+        {!loading && tweets === "an error occurred" && (
+          <p className="text-red-500">Oops! Something went wrong. Try again.</p>
+        )}
+
+        {!loading &&
+          tweets &&
+          typeof tweets === "object" &&
+          tweets.success === false && (
+            <p className="opacity-60">
+              🤷 Nothing tweetable in that journal.
+              <br />
+              Try being more raw, expressive, or specific in your next entry.
+            </p>
+          )}
+
+        {!loading &&
+          tweets &&
+          typeof tweets === "object" &&
+          tweets.success &&
+          tweets.tweets.map((t, i) => (
+            <div key={i} className="p-4 bg-white rounded shadow-sm">
+              <p className="whitespace-pre-line text-gray-800 mb-2">
+                {t.tweet}
+              </p>
+              {t.suggested_media && (
+                <p className="text-sm text-gray-500">
+                  📸 Suggested media: <em>{t.suggested_media}</em>
+                </p>
+              )}
+            </div>
+          ))}
       </section>
     </main>
   );
