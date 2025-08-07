@@ -1,13 +1,48 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TemplateTweet from "../components/TemplateTweet";
 import SectionFooter from "../components/SectionFooter";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function V1() {
   const [journal, setJournal] = useState("");
   const [tweets, setTweets] = useState(null); // null | string | object
   const [loading, setLoading] = useState(false);
+  const [credits, setCredits] = useState(null);
+
+  useEffect(() => {
+    const fetchCredits = async () => {
+      try {
+        const res = await fetch("/api/credits");
+        const data = await res.json();
+        if (res.ok) {
+          setCredits(data.credits);
+        } else {
+          console.error(data.error);
+        }
+      } catch (error) {
+        console.error("Error fetching credits:", error);
+      }
+    };
+
+    fetchCredits();
+  }, []);
+
+  const fetchCredits = async () => {
+    try {
+      const res = await fetch("/api/credits");
+      const data = await res.json();
+      if (res.ok) {
+        setCredits(data.credits);
+      } else {
+        console.error(data.error);
+      }
+    } catch (error) {
+      console.error("Error fetching credits:", error);
+    }
+  };
 
   async function handleGenerate(e) {
     e.preventDefault();
@@ -15,6 +50,7 @@ export default function V1() {
     setTweets(null);
 
     try {
+      // First: Call GPT generation API
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -22,10 +58,30 @@ export default function V1() {
       });
 
       const data = await res.json();
-      console.log("GPT Response:", data);
-      setTweets(data); // directly set object with { success, tweets }
+
+      if (!res.ok || !data || typeof data !== "object") {
+        throw new Error("Invalid response from /api/generate");
+      }
+
+      // Second: Try deducting credit — but catch error separately
+      try {
+        const deductRes = await axios.post("/api/deduct");
+        await fetchCredits();
+      } catch (deductErr) {
+        const errMsg =
+          deductErr?.response?.data?.error || "Credit deduction failed";
+        console.error("Credit deduction failed:", deductErr);
+        toast.error(errMsg); // Will show: "insufficient credits"
+        return;
+      }
+
+      setTweets(data); // { success: true, tweets: [...] }
+      
+      toast.success("Tweets generated");
     } catch (err) {
+      console.error("Error in handleGenerate:", err);
       setTweets("an error occurred");
+      toast.error("generation failed");
     } finally {
       setLoading(false);
     }
@@ -63,7 +119,7 @@ export default function V1() {
                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow font-lora opacity-80"
               >
                 <li>
-                  <a>credits: 100</a>
+                  <a>credits: {credits}</a>
                 </li>
                 <li>
                   <a>billing</a>
@@ -80,7 +136,7 @@ export default function V1() {
           <div className="navbar-center hidden sm:flex">
             <ul className="menu menu-horizontal px-1 font-lora opacity-80">
               <li>
-                <a>credits: 100</a>
+                <a>credits: {credits}</a>
               </li>
               <li>
                 <a>billing</a>
