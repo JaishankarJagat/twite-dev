@@ -6,7 +6,7 @@ export async function POST(req) {
     const { prompt } = await req.json();
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4.1-mini",
+      model: "gpt-5-mini",
       temperature: 1,
       max_tokens: 600,
       messages: [
