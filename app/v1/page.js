@@ -60,7 +60,7 @@ export default function V1() {
       });
 
       const data = await res.json();
-
+      console.log(data);
       if (!res.ok || !data || typeof data !== "object") {
         throw new Error("Invalid response from /api/generate");
       }
