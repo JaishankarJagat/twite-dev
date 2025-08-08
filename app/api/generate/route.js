@@ -270,3 +270,5 @@ export async function POST(req) {
     );
   }
 }
+
+// just like that
