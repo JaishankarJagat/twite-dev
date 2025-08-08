@@ -5,6 +5,8 @@ import TemplateTweet from "../components/TemplateTweet";
 import SectionFooter from "../components/SectionFooter";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { signOut } from "next-auth/react";
+import Link from "next/link";
 
 export default function V1() {
   const [journal, setJournal] = useState("");
@@ -76,7 +78,7 @@ export default function V1() {
       }
 
       setTweets(data); // { success: true, tweets: [...] }
-      
+
       toast.success("Tweets generated");
     } catch (err) {
       console.error("Error in handleGenerate:", err);
@@ -122,10 +124,10 @@ export default function V1() {
                   <a>credits: {credits}</a>
                 </li>
                 <li>
-                  <a>billing</a>
+                  <Link href={"/billing"}>billing</Link>
                 </li>
                 <li>
-                  <a>logout</a>
+                  <button onClick={() => signOut()}>logout</button>
                 </li>
               </ul>
             </div>
@@ -139,14 +141,17 @@ export default function V1() {
                 <a>credits: {credits}</a>
               </li>
               <li>
-                <a>billing</a>
+                <Link href={"/billing"}>billing</Link>
               </li>
             </ul>
           </div>
           <div className="navbar-end max-sm:hidden">
-            <a className="btn btn-ghost text-xl fot-raleway font-extrabold tracking-tighter">
+            <button
+              className="btn btn-ghost text-xl fot-raleway font-extrabold tracking-tighter"
+              onClick={() => signOut()}
+            >
               logout
-            </a>
+            </button>
           </div>
         </div>
       </section>

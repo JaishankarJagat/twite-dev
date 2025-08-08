@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import SectionFooter from "./components/SectionFooter";
+import Link from "next/link";
 
 export default function Home() {
   const [journal, setJournal] = useState("");
@@ -147,13 +148,13 @@ export default function Home() {
                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow font-lora opacity-80"
               >
                 <li>
-                  <a>demo</a>
+                  <a href="#demo">demo</a>
                 </li>
                 <li>
-                  <a>pricing</a>
+                  <a href="#pricing">pricing</a>
                 </li>
                 <li>
-                  <a>get started</a>
+                  <Link href={"/signin"}>get started</Link>
                 </li>
               </ul>
             </div>
@@ -164,17 +165,20 @@ export default function Home() {
           <div className="navbar-center hidden sm:flex">
             <ul className="menu menu-horizontal px-1 font-lora opacity-80">
               <li>
-                <a>demo</a>
+                <a href="#demo">demo</a>
               </li>
               <li>
-                <a>pricing</a>
+                <a href="#pricing">pricing</a>
               </li>
             </ul>
           </div>
           <div className="navbar-end max-sm:hidden">
-            <a className="btn btn-ghost text-xl fot-raleway font-extrabold tracking-tighter">
+            <Link
+              className="btn btn-ghost text-xl fot-raleway font-extrabold tracking-tighter"
+              href={"/signin"}
+            >
               get started.
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -193,9 +197,11 @@ export default function Home() {
           just tell it what you did. <br className="sm:hidden" />
           it’ll write what you can post.
         </div>
-        <button className="btn btn-neutral font-raleway font-extrabold text-lg">
-          i need this.
-        </button>
+        <a href="#pricing">
+          <button className="btn btn-neutral font-raleway font-extrabold text-lg">
+            i need this.
+          </button>
+        </a>
       </section>
       {/* section: why this exists */}
       <section className="bg-base-200">
@@ -224,15 +230,17 @@ export default function Home() {
                 happening?” box. i had logs. i had notes. i had thoughts. but
                 turning that into something worth posting? tiring fosho.
               </div>
-              <button className="btn btn-neutral font-raleway font-extrabold text-lg">
-                i agree.
-              </button>
+              <a href="#pricing">
+                <button className="btn btn-neutral font-raleway font-extrabold text-lg">
+                  i agree.
+                </button>
+              </a>
             </div>
           </div>
         </div>
       </section>
       {/* section: sample demo */}
-      <section className="max-w-3xl mx-auto px-6 py-32 text-center">
+      <section className="max-w-3xl mx-auto px-6 py-32 text-center" id="demo">
         <div className="font-space tracking-tight opacity-60 mb-2">
           see it in action...
         </div>
@@ -423,7 +431,7 @@ export default function Home() {
         </div>
       </section>
       {/* section: wanna try? */}
-      <section className="bg-base-200">
+      <section className="bg-base-200" id="pricing">
         <div className="max-w-3xl px-6 py-32 mx-auto text-center">
           <div className="font-space tracking-tight opacity-60 mb-2">
             wanna try?
@@ -518,9 +526,12 @@ export default function Home() {
               </svg>
             </div>
           </div>
-          <button className="btn btn-neutral font-raleway font-extrabold text-lg">
+          <Link
+            href={"/signin"}
+            className="btn btn-neutral font-raleway font-extrabold text-lg"
+          >
             let me try.
-          </button>
+          </Link>
         </div>
       </section>
       {/* section: doubts */}
