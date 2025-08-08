@@ -12,6 +12,11 @@ const config = {
     }),
   ],
   adapter: MongoDBAdapter(clientPromise),
+  pages: {
+    signIn: "/signin",
+    verifyRequest: "/verify-request",
+    error: "/error",
+  },
 };
 
 export const { handlers, signIn, signOut, auth } = NextAuth(config);
