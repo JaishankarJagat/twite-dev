@@ -23,10 +23,24 @@ const inter = Inter({
 });
 
 export const metadata = {
+  metadataBase: new URL("https://twite-dev.vercel.app"),
   title: "twite for X/twitter.",
   description: "build in public. stay visible.",
   openGraph: {
-    images: "/thumbnail.png",
+    title: "twite for X/twitter.",
+    description: "build in public. stay visible.",
+    url: "https://twite-dev.vercel.app",
+    siteName: "twite",
+    images: [
+      {
+        url: "/thumbnail.png", // relative works now because metadataBase is set
+        width: 1200,
+        height: 630,
+        alt: "twite social preview image",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
   },
 };
 

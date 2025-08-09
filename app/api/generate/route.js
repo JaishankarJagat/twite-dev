@@ -6,9 +6,8 @@ export async function POST(req) {
     const { prompt } = await req.json();
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4.1-mini",
+      model: "gpt-5-mini",
       temperature: 1,
-      max_tokens: 600,
       messages: [
         {
           role: "user",
@@ -86,11 +85,13 @@ export async function POST(req) {
 
             ⸻
 
-            Section: OPTIONAL TEMPLATES
+            Section: TEMPLATES
 
-            Use the 30 tweet templates below as inspiration only — not rules.
+            Use the 30 tweet templates below as guidance for strcuture.
 
-            Remix freely or ignore if the journal already has a strong voice.
+            The templates below are created based on viral tweets, use them to position the tweet for success.
+
+            If none of the templates are fitting the user's journal, remix freely and or ignore.
 
             —
 
