@@ -23,7 +23,7 @@ const inter = Inter({
 });
 
 export const metadata = {
-  metadataBase: new URL("https://twite-dev.vercel.app"),
+  metadataBase: new URL("https://www.twite.dev/"),
   title: "twite for X/twitter.",
   description: "build in public. stay visible.",
   openGraph: {
